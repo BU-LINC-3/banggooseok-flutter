@@ -1,6 +1,6 @@
 {
   "name": "kakao_flutter_sdk",
-  "version": "0.6.1",
+  "version": "0.6.0",
   "summary": "Flutter SDK for Kakao API",
   "description": "A new flutter plugin project.",
   "homepage": "https://github.com/CoderSpinoza/kakao_flutter_sdk",
