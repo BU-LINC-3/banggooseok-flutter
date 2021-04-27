@@ -1,3 +1,25 @@
+class RoomList {
+    
+    int pageMax;
+    int roomsLength;
+
+    List<RoomSimple> rooms;
+
+    RoomList({
+        this.pageMax, this.roomsLength, this.rooms
+    });
+
+    factory RoomList.fromJson(Map<String, dynamic> json) {
+
+        return RoomList(
+            pageMax: json['page_max'],
+            roomsLength: json['rooms_length'],
+            rooms: (json['rooms'] as List)?.map((e) => RoomSimple.fromJson(e))?.toList(),
+        );
+    }
+
+}
+
 // 매물 목록을 위한 Simple Model 입니다.
 class RoomSimple {
 

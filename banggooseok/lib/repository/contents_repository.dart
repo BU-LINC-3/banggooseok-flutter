@@ -13,7 +13,7 @@ abstract class ContentsRepository {
         return _ContentsRepository(dio);
     }
 
-    @GET("/bbanggooseok-core/api/room/list/{page}")
-    Future<List<RoomSimple>> getRoomData({@Path("page") int page});
+    @GET("/banggooseok-core/api/room/list/{page}")
+    Future<RoomList> getRoomData({@Path("page") int page});
 
 }

@@ -7,7 +7,7 @@ class HomeProvider extends ChangeNotifier {
 
     final ContentsRepository _contentsRepository = ContentsRepository();
 
-    ObservableData<List<RoomSimple>> _roomData;
+    ObservableData<RoomList> _roomData;
 
     void requestRoomList(int page) {
         _contentsRepository.getRoomData(page: page).then((value) {
@@ -15,7 +15,7 @@ class HomeProvider extends ChangeNotifier {
         });
     }
 
-    ObservableData<List<RoomSimple>> get getRoomList {
+    ObservableData<RoomList> get getRoomList {
         if (_roomData == null) {
             _roomData = ObservableData();
         }

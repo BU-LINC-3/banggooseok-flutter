@@ -1,5 +1,5 @@
 // import 'package:banggooseok/repository/model.dart';
-import 'package:banggooseok/home_list_widget.dart';
+//import 'package:banggooseok/home_list_widget.dart';
 import 'package:banggooseok/observable.dart';
 import 'package:banggooseok/provider/home_provider.dart';
 import 'package:banggooseok/repository/contents_repository.dart';
@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   
   int page = 0;
 
-  List<RoomSimple> roomList;
+  RoomList roomList;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
   }
 
   void _initObservers() {
-    provider.getRoomList.addObserver(Observer((List<RoomSimple> roomList) {
+    provider.getRoomList.addObserver(Observer((RoomList roomList) {
       setState(() {
         this.roomList = roomList;
       });
@@ -81,11 +81,11 @@ class _HomeState extends State<Home> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                child: Image.asset(
-                  null,
-                  width: 100,
-                  height: 100,
-                ),
+                // child: Image.asset(
+                //   roomList.rooms[index].images,
+                //   width: 100,
+                //   height: 100,
+                // ),
               ),
               Expanded(
                 child: Container(
@@ -95,7 +95,7 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        roomList[index].title,
+                        roomList.rooms[index].title,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 15),
                       ),
@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
                         height: 5,
                       ),
                       Text(
-                        roomList[index].address,
+                        roomList.rooms[index].address,
                         style: TextStyle(
                             fontSize: 12, color: Colors.black.withOpacity(0.3)),
                       ),
@@ -111,7 +111,7 @@ class _HomeState extends State<Home> {
                         height: 5,
                       ),
                       Text(
-                        calcStringToWon(roomList[index].fee.toString()),
+                        calcStringToWon(roomList.rooms[index].fee.toString()),
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                       Expanded(
@@ -127,7 +127,7 @@ class _HomeState extends State<Home> {
                             SizedBox(
                               width: 5,
                             ),
-                            Text(roomList[index].favCount.toString()),
+                            Text(roomList.rooms[index].favCount.toString()),
                           ],
                         ),
                       ),
@@ -139,7 +139,7 @@ class _HomeState extends State<Home> {
           ),
         );
       },
-      itemCount: 10,
+      itemCount: roomList.roomsLength,
       separatorBuilder: (BuildContext _context, int index) {
         return Container(
           height: 1,

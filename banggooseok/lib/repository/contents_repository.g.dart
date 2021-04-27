@@ -17,13 +17,13 @@ class _ContentsRepository implements ContentsRepository {
   String baseUrl;
 
   @override
-  Future<List<RoomSimple>> getRoomData({page}) async {
+  Future<RoomList> getRoomData({page}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<List<dynamic>>(
-        '/bbanggooseok-core/api/room/list/$page',
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/banggooseok-core/api/room/list/$page',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -31,9 +31,7 @@ class _ContentsRepository implements ContentsRepository {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    var value = _result.data
-        .map((dynamic i) => RoomSimple.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = RoomList.fromJson(_result.data);
     return value;
   }
 }
