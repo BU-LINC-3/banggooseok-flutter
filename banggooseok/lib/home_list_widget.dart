@@ -6,7 +6,7 @@ import 'package:banggooseok/provider/home_provider.dart';
 import 'package:flutter/material.dart';
 
 class HomeListWidget extends StatefulWidget {
-  final RoomData roomData;
+  final RoomSimple roomData;
 
   @override
   _HomeListWidgetState createState() => _HomeListWidgetState();

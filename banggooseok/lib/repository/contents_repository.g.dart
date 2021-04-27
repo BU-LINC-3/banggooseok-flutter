@@ -17,7 +17,7 @@ class _ContentsRepository implements ContentsRepository {
   String baseUrl;
 
   @override
-  Future<List<RoomData>> getRoomData({page}) async {
+  Future<List<RoomSimple>> getRoomData({page}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -32,7 +32,7 @@ class _ContentsRepository implements ContentsRepository {
             baseUrl: baseUrl),
         data: _data);
     var value = _result.data
-        .map((dynamic i) => RoomData.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) => RoomSimple.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
