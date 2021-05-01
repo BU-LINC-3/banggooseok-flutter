@@ -6,7 +6,7 @@ part of 'kakao_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserList _$UserFromJson(Map<String, dynamic> json) {
+UserList _$UserListFromJson(Map<String, dynamic> json) {
   return UserList(
     json['id'] as int,
     json['has_signed_up'] as bool,
@@ -26,7 +26,7 @@ UserList _$UserFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$UserToJson(UserList instance) {
+Map<String, dynamic> _$UserListToJson(UserList instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

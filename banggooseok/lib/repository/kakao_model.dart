@@ -27,10 +27,10 @@ class UserList {
       this.groupUserToken, this.synchedAt, this.connectedAt);
 
   /// <nodoc>
-  factory UserList.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory UserList.fromJson(Map<String, dynamic> json) => _$UserListFromJson(json);
 
   /// <nodoc>
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$UserListToJson(this);
 
   @override
   String toString() => toJson().toString();
