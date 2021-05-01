@@ -70,7 +70,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   Widget _bodyWidget() {
-    return ListView.separated(
+    return roomList == null ? null : ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       itemBuilder: (BuildContext _context, int index) {
         return GestureDetector(
