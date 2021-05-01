@@ -147,6 +147,10 @@ class _LoginDoneState extends State<LoginDone> {
     try {
       User user = await UserApi.instance.me();
       print(user.toString());
+      //User ID
+      //print(user.id);
+      // User profile
+      //print(user.properties);
     } on KakaoAuthException catch (e) {} catch (e) {}
   }
 
