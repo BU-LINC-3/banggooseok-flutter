@@ -1,104 +1,183 @@
+import 'dart:core';
+
 class RoomList {
-  int pageMax;
-  int roomsLength;
 
-  List<RoomSimple> rooms;
+    int pageMax;
+    int roomsLength;
 
-  RoomList({this.pageMax, this.roomsLength, this.rooms});
+    List<RoomSimple> rooms;
 
-  factory RoomList.fromJson(Map<String, dynamic> json) {
-    return RoomList(
-      pageMax: json['page_max'],
-      roomsLength: json['rooms_length'],
-      rooms:
-          (json['rooms'] as List)?.map((e) => RoomSimple.fromJson(e))?.toList(),
-    );
-  }
+    RoomList({this.pageMax, this.roomsLength, this.rooms});
+
+    factory RoomList.fromJson(Map<String, dynamic> json) {
+        return RoomList(
+            pageMax: json['page_max'],
+            roomsLength: json['rooms_length'],
+            rooms: (json['rooms'] as List)?.map((e) => RoomSimple.fromJson(e))?.toList(),
+        );
+    }
 }
 
-// 매물 목록을 위한 Simple Model 입니다.
 class RoomSimple {
-  int id;
-  String title;
-  String address;
-  int fee;
-  int favCount;
-  List<ImageObject> images;
 
-  RoomSimple({
-    this.id,
-    this.title,
-    this.address,
-    this.fee,
-    this.favCount,
-    this.images,
-  });
+    int id;
+    String title;
+    int transType;
+    int deposit;
+    int fee;
+    int floor;
+    int constType;
+    String address;
+    List<RoomImage> images;
+    int timestamp;
+    bool transDone;
+    int favCount;
 
-  factory RoomSimple.fromJson(Map<String, dynamic> json) {
-    return RoomSimple(
-      id: json['id'],
-      title: json['title'],
-      address: json['address'],
-      fee: json['fee'],
-      favCount: json['fav_count'],
-      images: (json['images'] as List)
-          ?.map((e) => ImageObject.fromJson(e))
-          ?.toList(),
-    );
-  }
+    RoomSimple({
+        this.id,
+        this.title,
+        this.transType,
+        this.deposit,
+        this.fee,
+        this.floor,
+        this.constType,
+        this.address,
+        this.images,
+        this.timestamp,
+        this.transDone,
+        this.favCount,
+    });
+
+    factory RoomSimple.fromJson(Map<String, dynamic> json) {
+        return RoomSimple(
+            id: json['id'],
+            title: json['title'],
+            transType: json['trans_type'],
+            deposit: json['deposit'],
+            fee: json['fee'],
+            floor: json['floor'],
+            constType: json['const_type'],
+            address: json['address'],
+            images: (json['images'] as List)
+                    ?.map((e) => RoomImage.fromJson(e))
+                    ?.toList(),
+            timestamp: json['timestamp'],
+            transDone: json['trans_done'],
+            favCount: json['fav_count'],
+        );
+    }
 }
 
-// TODO: 상세 정보에 맞게 Model 작성해 주세요.
 class Room {
-  int id;
-  String title;
-  String address;
-  int fee;
-  int favCount;
-  List<ImageObject> images;
 
-  Room({
-    this.id,
-    this.title,
-    this.address,
-    this.fee,
-    this.favCount,
-    this.images,
-  });
+    int id;
+    int userId;
+    String title;
+    String description;
+    int transType;
+    int deposit;
+    int fee;
+    int manageFee;
+    List<String> manageTags;
+    int floor;
+    int constType;
+    int constFloor;
+    double validDimen;
+    double supplyDimen;
+    int availDate;
+    List<String> options;
+    bool elevator;
+    int parking;
+    int tempSys;
+    String contact;
+    String address;
+    List<RoomImage> images;
+    int timestamp;
+    bool transDone;
+    int favCount;
 
-  factory Room.fromJson(Map<String, dynamic> json) {
-    return Room(
-      id: json['id'],
-      title: json['title'],
-      address: json['address'],
-      fee: json['fee'],
-      favCount: json['fav_count'],
-      images: (json['images'] as List)
-          ?.map((e) => ImageObject.fromJson(e))
-          ?.toList(),
-    );
-  }
+    Room({
+        this.id,
+        this.userId,
+        this.title,
+        this.description,
+        this.transType,
+        this.deposit,
+        this.fee,
+        this.manageFee,
+        this.manageTags,
+        this.floor,
+        this.constFloor,
+        this.constType,
+        this.validDimen,
+        this.supplyDimen,
+        this.availDate,
+        this.options,
+        this.elevator,
+        this.parking,
+        this.tempSys,
+        this.contact,
+        this.address,
+        this.images,
+        this.timestamp,
+        this.transDone,
+        this.favCount,
+    });
+
+    factory Room.fromJson(Map<String, dynamic> json) {
+        return Room(
+            id: json['id'],
+            userId: json['user_id'],
+            title: json['title'],
+            description: json['description'],
+            transType: json['trans_type'],
+            deposit: json['deposit'],
+            fee: json['fee'],
+            manageFee: json['manage_fee'],
+            manageTags: json['manage_tags'],
+            floor: json['floor'],
+            constFloor: json['const_floor'],
+            constType: json['const_type'],
+            validDimen: json['valid_dimen'],
+            supplyDimen: json['supply_dimen'],
+            availDate: json['avali_date'],
+            options: json['options'],
+            elevator: json['elevator'],
+            parking: json['parking'],
+            tempSys: json['temp_sys'],
+            address: json['address'],
+            images: (json['images'] as List)
+                    ?.map((e) => RoomImage.fromJson(e))
+                    ?.toList(),
+            timestamp: json['timestamp'],
+            transDone: json['trans_done'],
+            favCount: json['fav_count'],
+        );
+    }
 }
 
-class ImageObject {
-  int id;
-  int user_id;
-  String path;
-  int timestamp;
+class RoomImage {
 
-  ImageObject({
-    this.id,
-    this.user_id,
-    this.path,
-    this.timestamp,
-  });
+    static final IMAGE_BASE_URL = "http://34.64.218.185/image";
 
-  factory ImageObject.fromJson(Map<String, dynamic> json) {
-    return ImageObject(
-      id: json['id'],
-      user_id: json['user_id'],
-      path: json['path'],
-      timestamp: json['timestamp'],
-    );
-  }
+    int id;
+    int userId;
+    String path;
+    int timestamp;
+
+    RoomImage({
+        this.id,
+        this.userId,
+        this.path,
+        this.timestamp,
+    });
+
+    factory RoomImage.fromJson(Map<String, dynamic> json) {
+        return RoomImage(
+            id: json['id'],
+            userId: json['user_id'],
+            path: json['path'],
+            timestamp: json['timestamp'],
+        );
+    }
 }
