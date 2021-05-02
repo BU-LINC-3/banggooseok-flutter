@@ -134,14 +134,18 @@ class Room {
             deposit: json['deposit'],
             fee: json['fee'],
             manageFee: json['manage_fee'],
-            manageTags: json['manage_tags'],
+            manageTags: (json['manage_tags'] as List)
+                        ?.map((e) => e as String)
+                        ?.toList(),
             floor: json['floor'],
             constFloor: json['const_floor'],
             constType: json['const_type'],
             validDimen: json['valid_dimen'],
             supplyDimen: json['supply_dimen'],
             availDate: json['avali_date'],
-            options: json['options'],
+            options: (json['options'] as List)
+                     ?.map((e) => e as String)
+                     ?.toList(),
             elevator: json['elevator'],
             parking: json['parking'],
             tempSys: json['temp_sys'],
