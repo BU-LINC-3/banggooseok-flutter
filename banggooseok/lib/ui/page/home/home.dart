@@ -43,6 +43,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
     Widget _appbarWidget() {
         return AppBar(
+            automaticallyImplyLeading: false,
             title: GestureDetector(
                 onTap: () {
                     print("click");
