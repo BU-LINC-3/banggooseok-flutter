@@ -1,7 +1,9 @@
 import 'package:banggooseok/kakao_Login.dart';
+import 'package:banggooseok/provider/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:kakao_flutter_sdk/user.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,6 +22,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: KakaoLogin(),
+      // home: ChangeNotifierProvider(
+      //   create: (BuildContext context) => HomeProvider(),
+      //   child: KakaoLogin(),
+      // ),
     );
   }
 }
