@@ -44,6 +44,16 @@ class _DetailContentViewState extends State<DetailContentView> with SingleTicker
         }));
     }
 
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: _appbarWidget(),
+            body: _bodyWidget(),
+            bottomNavigationBar: _bottomBarWidget(),
+        );
+    }
+
     Widget _appbarWidget() {
         return AppBar(
             backgroundColor: Colors.transparent,
@@ -63,80 +73,72 @@ class _DetailContentViewState extends State<DetailContentView> with SingleTicker
         );
     }
 
-    Widget _makeSliderImage() {
-        return Container(
-            child: Stack(
-                children: [
-                    Hero(
-                        tag: room.id,
-                        child: CarouselSlider(
-                            options: CarouselOptions(
-                                    height: MediaQuery.of(context).size.width,
-                                    initialPage: 0,
-                                    enableInfiniteScroll: false,
-                                    viewportFraction: 1,
-                                    onPageChanged: (index, reson) {
-                                        setState(() {
-                                            current = index;
-                                        });
-                                    }),
-                            items: room.images.map(
-                                (map) {
-                                    return Image.network(
-                                        RoomImage.IMAGE_BASE_URL + map.path,
-                                        width: MediaQuery.of(context).size.width,
-                                        fit: BoxFit.fill,
-                                    );
-                                },
-                            ).toList(),
-                        ),
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: room.images.map((map) {
-                                return Container(
-                                    width: 10.0,
-                                    height: 10.0,
-                                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: current == room.images.indexOf(map)
-                                                ? Color.fromRGBO(0, 0, 0, 0.9)
-                                                : Color.fromRGBO(0, 0, 0, 0.4),
-                                    ),
-                                );
-                            }).toList(),
-                        ),
-                    ),
-                ],
-            ),
-        );
-    }
-
-    Widget _sellerSimpleInfo() {
-        return Row(
-            children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                        width: 50,
-                        height: 50,
-                        // child: Image.network(properties["profile_image_url"]),
-                    ),
-                )
-            ],
-        );
-    }
-
     Widget _bodyWidget() {
         return Column(
             children: [
-                _makeSliderImage(),
-                _sellerSimpleInfo(),
+                Container(
+                    child: room == null ? null : Stack(
+                        children: [
+                            Hero(
+                                tag: room.id,
+                                child: CarouselSlider(
+                                    options: CarouselOptions(
+                                            height: MediaQuery.of(context).size.width,
+                                            initialPage: 0,
+                                            enableInfiniteScroll: false,
+                                            viewportFraction: 1,
+                                            onPageChanged: (index, reson) {
+                                                setState(() {
+                                                    current = index;
+                                                });
+                                            }),
+                                    items: room.images.map(
+                                        (map) {
+                                            return Image.network(
+                                                RoomImage.IMAGE_BASE_URL + map.path,
+                                                width: MediaQuery.of(context).size.width,
+                                                fit: BoxFit.cover,
+                                            );
+                                        },
+                                    ).toList(),
+                                ),
+                            ),
+                            Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: room.images.map((map) {
+                                        return Container(
+                                            width: 10.0,
+                                            height: 10.0,
+                                            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: current == room.images.indexOf(map)
+                                                        ? Color.fromRGBO(0, 0, 0, 0.9)
+                                                        : Color.fromRGBO(0, 0, 0, 0.4),
+                                            ),
+                                        );
+                                    }).toList(),
+                                ),
+                            ),
+                        ],
+                    ),
+                ),
+                Row(
+                    children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Container(
+                                width: 50,
+                                height: 50,
+                                // child: Image.network(properties["profile_image_url"]),
+                            ),
+                        )
+                    ],
+                ),
             ],
         );
     }
@@ -146,16 +148,6 @@ class _DetailContentViewState extends State<DetailContentView> with SingleTicker
             height: 55,
             width: MediaQuery.of(context).size.width,
             color: Colors.red,
-        );
-    }
-
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: _appbarWidget(),
-            body: _bodyWidget(),
-            bottomNavigationBar: _bottomBarWidget(),
         );
     }
 }

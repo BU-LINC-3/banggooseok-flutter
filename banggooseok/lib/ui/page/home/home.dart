@@ -94,6 +94,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                             RoomImage.IMAGE_BASE_URL + roomList.rooms[index].images[0].path,
                                             width: 100,
                                             height: 100,
+                                            fit: BoxFit.cover,
                                         ),
                                     ),
                                 ),
