@@ -87,3 +87,10 @@ lib/generated_plugin_registrant.dart
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,dart
+banggooseok/.flutter-plugins
+banggooseok/.flutter-plugins-dependencies
+banggooseok/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+banggooseok/android/local.properties
+banggooseok/ios/Pods/Manifest.lock
+banggooseok/ios/Runner/GeneratedPluginRegistrant.h
+banggooseok/ios/Runner/GeneratedPluginRegistrant.m
