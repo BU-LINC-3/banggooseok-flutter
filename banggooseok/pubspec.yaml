@@ -11,8 +11,8 @@ environment:
 dependencies:
     flutter:
         sdk: flutter
-    kakao_flutter_sdk: 
-    dio:
+    kakao_flutter_sdk:
+    dio: 
     json_annotation:
     package_info:
     platform:
@@ -29,7 +29,7 @@ dev_dependencies:
         sdk: flutter
     retrofit_generator:
     build_runner:
-    json_serializable: ^3.5.1
+    json_serializable:
 
 flutter:
     uses-material-design: true

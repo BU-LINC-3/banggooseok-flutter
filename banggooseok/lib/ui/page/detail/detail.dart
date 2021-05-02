@@ -1,6 +1,5 @@
 import 'package:banggooseok/arch/observable.dart';
 import 'package:banggooseok/repository/banggooseok/model.dart';
-import 'package:banggooseok/repository/banggooseok/repository.dart';
 import 'package:banggooseok/ui/page/detail/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
