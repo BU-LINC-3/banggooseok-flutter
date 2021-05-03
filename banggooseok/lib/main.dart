@@ -21,10 +21,6 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.blue,
             ),
             home: LoginPage(),
-            // home: ChangeNotifierProvider(
-            //     create: (BuildContext context) => HomeProvider(),
-            //     child: KakaoLogin(),
-            // ),
         );
     }
 }

@@ -78,7 +78,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                         Navigator.push(context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) 
-                                    => DetailContentView(roomList.rooms[index].id)
+                                    => DetailPage(roomList.rooms[index].id)
                             )
                         );
                     },
