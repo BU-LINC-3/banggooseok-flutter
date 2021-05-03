@@ -96,33 +96,24 @@ class _LoginPageState extends State<LoginPage> {
                 actions: [],
             ),
             body: Center(
-                child: Container(
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                            Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                    ButtonTheme(
-                                        minWidth: 300.0,
-                                        height: 50.0,
-                                        shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(10)),
-                                        child: ElevatedButton(
-                                                child: Text(
-                                                    "카카오계정 로그인",
-                                                ),
-                                                style: ButtonStyle(
-                                                    backgroundColor: MaterialStateProperty.all(Colors.yellow)
-                                                ),
-                                                onPressed: _isKakaoTalkInstalled
-                                                        ? _loginWithTalk
-                                                        : _loginWithKakao),
-                                    ),
-                                ],
+                child: ElevatedButton(
+                    child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                            "카카오계정 로그인",
+                            style: TextStyle(
+                                fontSize: 24,
                             ),
-                        ],
+                        ),
                     ),
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(1),
+                        backgroundColor: MaterialStateProperty.all(Colors.yellow),
+                        foregroundColor: MaterialStateProperty.all(Colors.black),
+                    ),
+                    onPressed: _isKakaoTalkInstalled
+                            ? _loginWithTalk
+                            : _loginWithKakao
                 ),
             ),
         );
