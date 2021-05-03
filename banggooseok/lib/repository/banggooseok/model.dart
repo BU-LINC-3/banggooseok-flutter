@@ -1,5 +1,10 @@
 import 'dart:core';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'model.g.dart';
+
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class RoomList {
 
     int pageMax;
@@ -9,15 +14,13 @@ class RoomList {
 
     RoomList({this.pageMax, this.roomsLength, this.rooms});
 
-    factory RoomList.fromJson(Map<String, dynamic> json) {
-        return RoomList(
-            pageMax: json['page_max'],
-            roomsLength: json['rooms_length'],
-            rooms: (json['rooms'] as List)?.map((e) => RoomSimple.fromJson(e))?.toList(),
-        );
-    }
+    factory RoomList.fromJson(Map<String, dynamic> json) => _$RoomListFromJson(json);
+
+    Map<String, dynamic> toJson() => _$RoomListToJson(this);
+
 }
 
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class RoomSimple {
 
     int id;
@@ -48,26 +51,13 @@ class RoomSimple {
         this.favCount,
     });
 
-    factory RoomSimple.fromJson(Map<String, dynamic> json) {
-        return RoomSimple(
-            id: json['id'],
-            title: json['title'],
-            transType: json['trans_type'],
-            deposit: json['deposit'],
-            fee: json['fee'],
-            floor: json['floor'],
-            constType: json['const_type'],
-            address: json['address'],
-            images: (json['images'] as List)
-                    ?.map((e) => RoomImage.fromJson(e))
-                    ?.toList(),
-            timestamp: json['timestamp'],
-            transDone: json['trans_done'],
-            favCount: json['fav_count'],
-        );
-    }
+    factory RoomSimple.fromJson(Map<String, dynamic> json) => _$RoomSimpleFromJson(json);
+
+    Map<String, dynamic> toJson() => _$RoomSimpleToJson(this);
+
 }
 
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class Room {
 
     int id;
@@ -124,42 +114,13 @@ class Room {
         this.favCount,
     });
 
-    factory Room.fromJson(Map<String, dynamic> json) {
-        return Room(
-            id: json['id'],
-            userId: json['user_id'],
-            title: json['title'],
-            description: json['description'],
-            transType: json['trans_type'],
-            deposit: json['deposit'],
-            fee: json['fee'],
-            manageFee: json['manage_fee'],
-            manageTags: (json['manage_tags'] as List)
-                        ?.map((e) => e as String)
-                        ?.toList(),
-            floor: json['floor'],
-            constFloor: json['const_floor'],
-            constType: json['const_type'],
-            validDimen: json['valid_dimen'],
-            supplyDimen: json['supply_dimen'],
-            availDate: json['avali_date'],
-            options: (json['options'] as List)
-                     ?.map((e) => e as String)
-                     ?.toList(),
-            elevator: json['elevator'],
-            parking: json['parking'],
-            tempSys: json['temp_sys'],
-            address: json['address'],
-            images: (json['images'] as List)
-                    ?.map((e) => RoomImage.fromJson(e))
-                    ?.toList(),
-            timestamp: json['timestamp'],
-            transDone: json['trans_done'],
-            favCount: json['fav_count'],
-        );
-    }
+    factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);
+
+    Map<String, dynamic> toJson() => _$RoomToJson(this);
+
 }
 
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
 class RoomImage {
 
     static final IMAGE_BASE_URL = "http://34.64.218.185/image";
@@ -176,12 +137,8 @@ class RoomImage {
         this.timestamp,
     });
 
-    factory RoomImage.fromJson(Map<String, dynamic> json) {
-        return RoomImage(
-            id: json['id'],
-            userId: json['user_id'],
-            path: json['path'],
-            timestamp: json['timestamp'],
-        );
-    }
+    factory RoomImage.fromJson(Map<String, dynamic> json) => _$RoomImageFromJson(json);
+
+    Map<String, dynamic> toJson() => _$RoomImageToJson(this);
+
 }

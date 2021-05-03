@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 
 part 'repository.g.dart';
 
-@RestApi(baseUrl: 'http://34.64.218.185:8080/')
+@RestApi(baseUrl: 'http://localhost:8080/')
 abstract class BanggooseokRepository {
 
     factory BanggooseokRepository({String baseUrl}) {
