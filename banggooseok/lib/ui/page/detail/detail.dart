@@ -141,6 +141,7 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
         return Container(
             child: Column(
                 children: [
+                    //여기서 작업 하시면 됩니다. 매물 정보는 room에 있습니다. ex) room.address
                     Padding(
                         padding: EdgeInsets.fromLTRB(10, 25, 10, 25),
                         child: Row(
