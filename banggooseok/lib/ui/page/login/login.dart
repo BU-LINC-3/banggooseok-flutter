@@ -1,6 +1,5 @@
-import 'package:banggooseok/ui/page/home/home.dart';
+import 'package:banggooseok/ui/page/base/base.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 
@@ -43,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             print(token);
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginDone()),
+                MaterialPageRoute(builder: (context) => BasePage()),
             );
         } catch (e) {
             print("error on issuing access token: $e");
@@ -88,7 +87,6 @@ class _LoginPageState extends State<LoginPage> {
 
     @override
     Widget build(BuildContext context) {
-        isKakaoTalkInstalled();
         return Scaffold(
             appBar: AppBar(
                 title: Text("방구석"),
@@ -116,96 +114,6 @@ class _LoginPageState extends State<LoginPage> {
                             : _loginWithKakao
                 ),
             ),
-        );
-    }
-}
-
-class LoginDone extends StatefulWidget {
-    @override
-    _LoginDoneState createState() => _LoginDoneState();
-}
-
-class _LoginDoneState extends State<LoginDone> {
-    int _currentPageIndex;
-
-    @override
-    void initState() {
-        super.initState();
-        _currentPageIndex = 0;
-    }
-
-    Future _getUser() async {
-        try {
-            User user = await UserApi.instance.me();
-            print(user.toString());
-        } on KakaoAuthException catch (e) {
-            throw e;
-        }
-    }
-
-    Widget _bodyWidget() {
-        switch (_currentPageIndex) {
-            case 0:
-                return HomePage();
-                break;
-            case 1:
-                return Container();
-                break;
-            case 2:
-                return Container();
-                break;
-            case 3:
-                return Container();
-                break;
-            case 4:
-                return Container();
-                break;
-        }
-        return Container();
-    }
-
-    Widget _botomNavigationBarwidget() {
-        return BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            onTap: (int index) {
-                print(index);
-                setState(() {
-                    _currentPageIndex = index;
-                });
-            },
-            selectedFontSize: 12,
-            currentIndex: _currentPageIndex,
-            selectedItemColor: Colors.black,
-            selectedLabelStyle: TextStyle(color: Colors.black),
-            items: [
-                _bottomNavigationBarItem("home", "홈"),
-                _bottomNavigationBarItem("notes", "매물등록"),
-                _bottomNavigationBarItem("location", "내 근처"),
-                _bottomNavigationBarItem("chat", "채팅"),
-                _bottomNavigationBarItem("user", "내정보"),
-            ],
-        );
-    }
-
-    BottomNavigationBarItem _bottomNavigationBarItem(
-            String iconName, String label) {
-        return BottomNavigationBarItem(
-            icon: Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: SvgPicture.asset("assets/svg/${iconName}_off.svg", width: 22),
-            ),
-            activeIcon: SvgPicture.asset("assets/svg/${iconName}_on.svg", width: 22),
-            label: label,
-        );
-    }
-
-    @override
-    Widget build(BuildContext context) {
-        _getUser();
-        return Scaffold(
-            // appBar: _appbarWidget(),
-            body: _bodyWidget(),
-            bottomNavigationBar: _botomNavigationBarwidget(),
         );
     }
 }
