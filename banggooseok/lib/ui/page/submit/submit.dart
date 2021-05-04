@@ -4,6 +4,7 @@ import 'package:banggooseok/arch/observable.dart';
 import 'package:banggooseok/repository/banggooseok/model.dart';
 import 'package:banggooseok/ui/page/detail/detail.dart';
 import 'package:banggooseok/ui/page/submit/provider.dart';
+import 'package:banggooseok/ui/widget/backdrop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,9 +21,6 @@ class _SubmitPageState extends State<SubmitPage> {
     final _typeList = ["월세", "전세", "년세"];
 
     String _token;
-    int _userId;
-    int _roomId;
-    int _transType;
 
     ImagePicker imagePicker = ImagePicker();
     SubmitProvider provider = SubmitProvider();
@@ -41,7 +39,7 @@ class _SubmitPageState extends State<SubmitPage> {
 
     void _initViews(){
         setState(() {
-            _transType = 1;
+            room.transType = 1;
         });
     }
 
@@ -54,15 +52,14 @@ class _SubmitPageState extends State<SubmitPage> {
 
         provider.getUserId.addObserver(Observer((int value) {
             setState(() {
-                _userId = value;
+                room.userId = value;
             });
         }));
 
         provider.getRoomId.addObserver(Observer((int value) {
             setState(() {
-                _roomId = value;
+                room.id = value;
             });
-            _showImageUploader();
         }));
 
         provider.getRoomImage.addObserver(Observer((RoomImage value) {
@@ -77,26 +74,21 @@ class _SubmitPageState extends State<SubmitPage> {
 
     @override
     Widget build(BuildContext context) {
+        return room.id == null ? _bodyForm() : _bodyImageUpload();
+    }
+
+    Widget _bodyForm() {
         return Scaffold(
             appBar: AppBar(
                 automaticallyImplyLeading: false,
-                title: GestureDetector(
-                    onTap: () {
-                        print("click");
-                    },
-                    child: Row(
-                        children: [
-                            Text("매물 등록"),
-                        ],
-                    ),
-                ),
+                title: Text("매물 등록"),
                 elevation: 0,
             ),
             body: Padding(
                 padding: EdgeInsets.fromLTRB(24, 5, 24, 5),
                 child: Form(
                     key: _roomFormKey,
-                    child: Column(
+                    child: ListView(
                         children: [
                             Padding(
                                 padding: EdgeInsets.only(bottom: 5),
@@ -126,24 +118,25 @@ class _SubmitPageState extends State<SubmitPage> {
                             ),
                             Padding(
                                 padding: EdgeInsets.only(bottom: 10),
-                                child: Wrap(
-                                    children: List<Widget>.generate(3, (index) {
-                                        return Padding(
-                                            padding: EdgeInsets.only(left: 10, right: 10),
-                                            child: ChoiceChip(
-                                                padding: EdgeInsets.only(left: 24, right: 24),
-                                                selectedColor: Colors.teal,
-                                                label: Text(_typeList[index]),
-                                                selected: _transType == index + 1,
-                                                onSelected: (bool selected) {
-                                                    setState(() {
-                                                        _transType = index + 1;
-                                                        room.transType = _transType;
-                                                    });
-                                                },
-                                            ),
-                                        );
-                                    }).toList(),
+                                child: Center(
+                                    child: Wrap(
+                                        children: List<Widget>.generate(3, (index) {
+                                            return Padding(
+                                                padding: EdgeInsets.only(left: 10, right: 10),
+                                                child: ChoiceChip(
+                                                    padding: EdgeInsets.only(left: 24, right: 24),
+                                                    selectedColor: Colors.teal,
+                                                    label: Text(_typeList[index]),
+                                                    selected: room.transType == index + 1,
+                                                    onSelected: (bool selected) {
+                                                        setState(() {
+                                                            room.transType = index + 1;
+                                                        });
+                                                    },
+                                                ),
+                                            );
+                                        }).toList(),
+                                    ),
                                 ),
                             ),
                             Padding(
@@ -197,6 +190,8 @@ class _SubmitPageState extends State<SubmitPage> {
                                     decoration: InputDecoration(
                                         hintText: "기타 설명",
                                     ),
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
                                     maxLength: 1000,
                                     validator: (String value) => _validate(value, "설명을 입력해주세요."),
                                     onChanged: (value) {
@@ -226,8 +221,7 @@ class _SubmitPageState extends State<SubmitPage> {
                 child: ElevatedButton(
                     onPressed: () {
                         if (_roomFormKey.currentState.validate()) {
-                            room.transType = _transType;
-                            provider.postRoom(_token, _userId, room);
+                            provider.postRoom(_token, room.userId, room);
                         }
                     },
                     style: ButtonStyle(
@@ -246,94 +240,82 @@ class _SubmitPageState extends State<SubmitPage> {
         );
     }
 
+    Widget _bodyImageUpload() {
+        return Scaffold(
+            appBar: AppBar(
+                automaticallyImplyLeading: false,
+                title: Text("매물 이미지 등록"),
+                elevation: 0,
+            ),
+            body: Column(
+                children: [
+                    BackdropWidget(room),
+                    Expanded(
+                        child: Center(
+                            child: Container(
+                                width: kToolbarHeight * 1.5,
+                                height: kToolbarHeight * 1.5,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                        _getImageFromDevice((value) {
+                                            provider.postImage(room.id, _token, room.userId, value);
+                                        });
+                                    },
+                                    style: ButtonStyle(
+                                        elevation: MaterialStateProperty.all(0),
+                                        backgroundColor: MaterialStateProperty.all(Colors.deepOrange),
+                                    ),
+                                    child: Text(
+                                        "+",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 32,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ],
+            ),
+            bottomNavigationBar: Container(
+                width: double.infinity,
+                height: kToolbarHeight,
+                child: ElevatedButton(
+                    onPressed: () {
+                        if (room.images != null && room.images.length != 0) {
+                            room.transType = 1;
+                            int id = room.id;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(maintainState: false, builder: (context) => DetailPage(id)),
+                            );
+                            setState(() {
+                                room = Room();
+                            });
+                        }
+                    },
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(0),
+                        backgroundColor: MaterialStateProperty.all(Colors.deepOrange),
+                    ),
+                    child: Text(
+                        "완료",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+
     String _validate(String value, String string) {
         if (value == null || value.isEmpty) {
             return string;
         }
         return null;
-    }
-
-    void _showImageUploader() {
-        showCupertinoModalPopup(
-            context: context, 
-            barrierDismissible: false,
-            builder: (_) => Scaffold(
-                appBar: AppBar(
-                    title: Text("이미지 업로드"),
-                    automaticallyImplyLeading: true,
-                    elevation: 0,
-                ),
-                body: Column(
-                    children: [
-                        SizedBox(
-                            height: 200,
-                            child: room.images == null ? null : ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: List<Widget>.generate(room.images.length, 
-                                    (index) {
-                                        return Image.network(
-                                            RoomImage.IMAGE_BASE_URL + room.images[index].path
-                                        );
-                                    }
-                                ),
-                            ),
-                        ),
-                        Expanded(
-                            child: Center(
-                                child: Container(
-                                    width: kToolbarHeight * 1.5,
-                                    height: kToolbarHeight * 1.5,
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                            _getImageFromDevice((value) {
-                                                provider.postImage(_roomId, _token, _userId, value);
-                                            });
-                                        },
-                                        style: ButtonStyle(
-                                            elevation: MaterialStateProperty.all(0),
-                                            backgroundColor: MaterialStateProperty.all(Colors.deepOrange),
-                                        ),
-                                        child: Text(
-                                            "+",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 32,
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                        Container(
-                            width: double.infinity,
-                            height: kToolbarHeight * 1.5,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                    if (room.images != null && room.images.length != 0) {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => DetailPage(_roomId)),
-                                        );
-                                    } else {
-                                    }
-                                },
-                                style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(0),
-                                    backgroundColor: MaterialStateProperty.all(Colors.deepOrange),
-                                ),
-                                child: Text(
-                                    "완료",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ],
-                ),
-            ),
-        );
     }
 
     Future _getImageFromDevice(callback) async {
