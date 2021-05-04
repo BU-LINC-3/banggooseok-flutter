@@ -2,7 +2,7 @@ import 'package:banggooseok/arch/observable.dart';
 import 'package:banggooseok/repository/banggooseok/model.dart';
 import 'package:banggooseok/ui/page/detail/provider.dart';
 import 'package:banggooseok/ui/widget/appbar.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:banggooseok/ui/widget/backdrop.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
@@ -49,7 +49,7 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
         return Scaffold(
             body: CustomAppBar(
                 collapsed: false, 
-                backdrop: _backdropWidget(),
+                backdrop: room == null ? null : BackdropWidget(room),
                 body: _bodyWidget(),
                 title: Text(""),
             ),
@@ -57,60 +57,6 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.1,
                 child: _bottomBarWidget(),
-            ),
-        );
-    }
-
-    Widget _backdropWidget() {
-        return Container(
-            child: room == null ? null : Stack(
-                children: [
-                    Hero(
-                        tag: room.id,
-                        child: CarouselSlider(
-                            options: CarouselOptions(
-                                    height: MediaQuery.of(context).size.width,
-                                    initialPage: 0,
-                                    enableInfiniteScroll: false,
-                                    viewportFraction: 1,
-                                    onPageChanged: (index, reson) {
-                                        setState(() {
-                                            current = index;
-                                        });
-                                    }),
-                            items: room.images.map(
-                                (map) {
-                                    return Image.network(
-                                        RoomImage.IMAGE_BASE_URL + map.path,
-                                        width: MediaQuery.of(context).size.width,
-                                        fit: BoxFit.cover,
-                                    );
-                                },
-                            ).toList(),
-                        ),
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: room.images.map((map) {
-                                return Container(
-                                    width: 10.0,
-                                    height: 10.0,
-                                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: current == room.images.indexOf(map)
-                                                ? Color.fromRGBO(0, 0, 0, 0.9)
-                                                : Color.fromRGBO(0, 0, 0, 0.4),
-                                    ),
-                                );
-                            }).toList(),
-                        ),
-                    ),
-                ],
             ),
         );
     }
