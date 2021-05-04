@@ -17,11 +17,20 @@ RoomList _$RoomListFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RoomListToJson(RoomList instance) => <String, dynamic>{
-      'page_max': instance.pageMax,
-      'rooms_length': instance.roomsLength,
-      'rooms': instance.rooms,
-    };
+Map<String, dynamic> _$RoomListToJson(RoomList instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('page_max', instance.pageMax);
+  writeNotNull('rooms_length', instance.roomsLength);
+  writeNotNull('rooms', instance.rooms);
+  return val;
+}
 
 RoomSimple _$RoomSimpleFromJson(Map<String, dynamic> json) {
   return RoomSimple(
@@ -43,21 +52,29 @@ RoomSimple _$RoomSimpleFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RoomSimpleToJson(RoomSimple instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'trans_type': instance.transType,
-      'deposit': instance.deposit,
-      'fee': instance.fee,
-      'floor': instance.floor,
-      'const_type': instance.constType,
-      'address': instance.address,
-      'images': instance.images,
-      'timestamp': instance.timestamp,
-      'trans_done': instance.transDone,
-      'fav_count': instance.favCount,
-    };
+Map<String, dynamic> _$RoomSimpleToJson(RoomSimple instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('title', instance.title);
+  writeNotNull('trans_type', instance.transType);
+  writeNotNull('deposit', instance.deposit);
+  writeNotNull('fee', instance.fee);
+  writeNotNull('floor', instance.floor);
+  writeNotNull('const_type', instance.constType);
+  writeNotNull('address', instance.address);
+  writeNotNull('images', instance.images);
+  writeNotNull('timestamp', instance.timestamp);
+  writeNotNull('trans_done', instance.transDone);
+  writeNotNull('fav_count', instance.favCount);
+  return val;
+}
 
 Room _$RoomFromJson(Map<String, dynamic> json) {
   return Room(
@@ -93,33 +110,42 @@ Room _$RoomFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
-      'id': instance.id,
-      'user_id': instance.userId,
-      'title': instance.title,
-      'description': instance.description,
-      'trans_type': instance.transType,
-      'deposit': instance.deposit,
-      'fee': instance.fee,
-      'manage_fee': instance.manageFee,
-      'manage_tags': instance.manageTags,
-      'floor': instance.floor,
-      'const_type': instance.constType,
-      'const_floor': instance.constFloor,
-      'valid_dimen': instance.validDimen,
-      'supply_dimen': instance.supplyDimen,
-      'avail_date': instance.availDate,
-      'options': instance.options,
-      'elevator': instance.elevator,
-      'parking': instance.parking,
-      'temp_sys': instance.tempSys,
-      'contact': instance.contact,
-      'address': instance.address,
-      'images': instance.images,
-      'timestamp': instance.timestamp,
-      'trans_done': instance.transDone,
-      'fav_count': instance.favCount,
-    };
+Map<String, dynamic> _$RoomToJson(Room instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('user_id', instance.userId);
+  writeNotNull('title', instance.title);
+  writeNotNull('description', instance.description);
+  writeNotNull('trans_type', instance.transType);
+  writeNotNull('deposit', instance.deposit);
+  writeNotNull('fee', instance.fee);
+  writeNotNull('manage_fee', instance.manageFee);
+  writeNotNull('manage_tags', instance.manageTags);
+  writeNotNull('floor', instance.floor);
+  writeNotNull('const_type', instance.constType);
+  writeNotNull('const_floor', instance.constFloor);
+  writeNotNull('valid_dimen', instance.validDimen);
+  writeNotNull('supply_dimen', instance.supplyDimen);
+  writeNotNull('avail_date', instance.availDate);
+  writeNotNull('options', instance.options);
+  writeNotNull('elevator', instance.elevator);
+  writeNotNull('parking', instance.parking);
+  writeNotNull('temp_sys', instance.tempSys);
+  writeNotNull('contact', instance.contact);
+  writeNotNull('address', instance.address);
+  writeNotNull('images', instance.images);
+  writeNotNull('timestamp', instance.timestamp);
+  writeNotNull('trans_done', instance.transDone);
+  writeNotNull('fav_count', instance.favCount);
+  return val;
+}
 
 RoomImage _$RoomImageFromJson(Map<String, dynamic> json) {
   return RoomImage(
@@ -130,9 +156,37 @@ RoomImage _$RoomImageFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$RoomImageToJson(RoomImage instance) => <String, dynamic>{
-      'id': instance.id,
-      'user_id': instance.userId,
-      'path': instance.path,
-      'timestamp': instance.timestamp,
-    };
+Map<String, dynamic> _$RoomImageToJson(RoomImage instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('user_id', instance.userId);
+  writeNotNull('path', instance.path);
+  writeNotNull('timestamp', instance.timestamp);
+  return val;
+}
+
+SubmitResponse _$SubmitResponseFromJson(Map<String, dynamic> json) {
+  return SubmitResponse(
+    roomId: json['room_id'] as int,
+  );
+}
+
+Map<String, dynamic> _$SubmitResponseToJson(SubmitResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('room_id', instance.roomId);
+  return val;
+}

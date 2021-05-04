@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 
 part 'repository.g.dart';
 
-@RestApi(baseUrl: 'http://localhost:8080/')
+@RestApi(baseUrl: 'http://34.64.218.185:8080/')
 abstract class BanggooseokRepository {
 
     factory BanggooseokRepository({String baseUrl}) {
@@ -22,7 +22,7 @@ abstract class BanggooseokRepository {
     Future<Room> getRoom({@Path("room_id") int roomId});
 
     @POST("/api/room/submit")
-    Future<Map<String, int>> postRoom({@Query("token") String token, 
+    Future<SubmitResponse> postRoom({@Query("token") String token, 
                                        @Query("user_id") int userId, 
                                        @Body() Room room});
 

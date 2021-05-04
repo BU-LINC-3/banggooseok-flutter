@@ -9,7 +9,7 @@ part of 'repository.dart';
 class _BanggooseokRepository implements BanggooseokRepository {
   _BanggooseokRepository(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
-    baseUrl ??= 'http://localhost:8080/';
+    baseUrl ??= 'http://34.64.218.185:8080/';
   }
 
   final Dio _dio;
@@ -55,7 +55,7 @@ class _BanggooseokRepository implements BanggooseokRepository {
   }
 
   @override
-  Future<Map<String, int>> postRoom({token, userId, room}) async {
+  Future<SubmitResponse> postRoom({token, userId, room}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'token': token,
@@ -72,7 +72,8 @@ class _BanggooseokRepository implements BanggooseokRepository {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    return _result.data;
+    final value = SubmitResponse.fromJson(_result.data);
+    return value;
   }
 
   @override

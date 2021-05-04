@@ -26,7 +26,7 @@ class SubmitProvider {
 
     void postRoom(String token, int userId, Room room) {
         _banggooseokRepository.postRoom(token: token, userId: userId, room: room).then((value) {
-            _roomId.setData(value["room_id"]);
+            _roomId.setData(value.roomId);
         });
     }
 

@@ -57,6 +57,11 @@ class _SubmitPageState extends State<SubmitPage> {
             setState(() {
                 _roomId = value;
             });
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DetailPage(_roomId)),
+            );
         }));
 
         provider.getRoomImage.addObserver(Observer((int value) {

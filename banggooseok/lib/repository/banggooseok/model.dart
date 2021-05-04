@@ -142,3 +142,16 @@ class RoomImage {
     Map<String, dynamic> toJson() => _$RoomImageToJson(this);
 
 }
+
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+class SubmitResponse {
+
+    int roomId;
+
+    SubmitResponse({this.roomId});
+
+    factory SubmitResponse.fromJson(Map<String, dynamic> json) => _$SubmitResponseFromJson(json);
+
+    Map<String, dynamic> toJson() => _$SubmitResponseToJson(this);
+
+}
