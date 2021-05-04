@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:banggooseok/arch/observable.dart';
 import 'package:banggooseok/repository/banggooseok/model.dart';
 import 'package:banggooseok/repository/banggooseok/repository.dart';
@@ -30,8 +32,8 @@ class SubmitProvider {
         });
     }
 
-    void postImage(int roomId, String token, int userId) {
-        _banggooseokRepository.postImage(roomId: roomId, token: token, userId: userId).then((value) {
+    void postImage(int roomId, String token, int userId, File image) {
+        _banggooseokRepository.postImage(roomId: roomId, token: token, userId: userId, image: image).then((value) {
             _roomImage.setData(value);
         });
     }

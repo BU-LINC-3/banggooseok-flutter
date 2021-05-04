@@ -12,8 +12,8 @@ dependencies:
     flutter:
         sdk: flutter
     kakao_flutter_sdk:
-    dio: 
-    json_annotation:
+    dio: ^3.0.10
+    json_annotation: 
     package_info:
     platform:
     shared_preferences:
