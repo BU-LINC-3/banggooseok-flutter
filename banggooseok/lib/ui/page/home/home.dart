@@ -12,9 +12,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
+    
     final HomeProvider provider = HomeProvider();
 
+    ScrollController _scrollController = ScrollController();
+
     int page = 0;
+    bool _loading = false;
 
     RoomList roomList;
 
@@ -23,16 +27,42 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
         super.initState();
 
         _initObservers();
+        _initEventListeners();
 
         provider.requestRoomList(page);
     }
 
     void _initObservers() {
-        provider.getRoomList.addObserver(Observer((RoomList roomList) {
+        provider.getRoomList.addObserver(Observer((RoomList value) {
             setState(() {
-                this.roomList = roomList;
+                if (roomList == null) {
+                    roomList = value;
+                } else {
+                    roomList.rooms.addAll(value.rooms);
+                    roomList.roomsLength += value.roomsLength;
+                    _loading = false;
+                }
             });
         }));
+    }
+
+    void _initEventListeners() {
+        _scrollController.addListener(() {
+            double max = _scrollController.position.maxScrollExtent;
+            double current = _scrollController.position.pixels;
+            if (max - current <= 50.0 && !_loading) {
+                _loading = true;
+                provider.requestRoomList(++page);
+            }
+        });
+    }
+
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+            appBar: _appbarWidget(),
+            body: _bodyWidget(),
+        );
     }
 
     final oCcy = new NumberFormat("#,###", "ko_KR");
@@ -44,15 +74,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
     Widget _appbarWidget() {
         return AppBar(
             automaticallyImplyLeading: false,
-            title: GestureDetector(
-                onTap: () {
-                    print("click");
-                },
-                child: Row(
-                    children: [
-                        Text("방구석"),
-                    ],
-                ),
+            title: Row(
+                children: [
+                    Text("방구석"),
+                ],
             ),
             elevation: 0.0,
             actions: [
@@ -152,6 +177,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     ),
                 );
             },
+            controller: _scrollController,
             itemCount: roomList.roomsLength,
             separatorBuilder: (BuildContext _context, int index) {
                 return Container(
@@ -159,14 +185,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                     color: Colors.black.withOpacity(0.4),
                 );
             },
-        );
-    }
-
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
-            appBar: _appbarWidget(),
-            body: _bodyWidget(),
         );
     }
 }

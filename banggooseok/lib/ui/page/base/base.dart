@@ -18,6 +18,15 @@ class _BasePageState extends State<BasePage> {
         _currentPageIndex = 0;
     }
 
+    @override
+    Widget build(BuildContext context) {
+        _getUser();
+        return Scaffold(
+            body: _bodyWidget(),
+            bottomNavigationBar: _botomNavigationBarwidget(),
+        );
+    }
+
     Future _getUser() async {
         try {
             User user = await UserApi.instance.me();
@@ -83,12 +92,9 @@ class _BasePageState extends State<BasePage> {
         );
     }
 
-    @override
-    Widget build(BuildContext context) {
-        _getUser();
-        return Scaffold(
-            body: _bodyWidget(),
-            bottomNavigationBar: _botomNavigationBarwidget(),
-        );
+    void selectTab(int index) {
+        setState(() {
+            _currentPageIndex = index;
+        });
     }
 }
