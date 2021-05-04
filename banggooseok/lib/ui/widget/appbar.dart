@@ -21,16 +21,53 @@ class CustomAppBar extends StatelessWidget {
                 SliverAppBar(
                     backgroundColor: Colors.transparent,
                     actions: [
-                        IconButton(icon: Icon(Icons.share), onPressed: () {}),
-                        IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+                        ClipOval(
+                            child: Container(
+                                height: kToolbarHeight,
+                                width: kToolbarHeight,
+                                color: Color.fromARGB(127, 255, 255, 255),
+                                child: IconButton(
+                                    color: Colors.black,
+                                    onPressed: () {
+                                        Navigator.pop(context);
+                                    },
+                                    icon: Icon(
+                                        Icons.share,
+                                    ),
+                                ),
+                            ),
+                        ),
+                        ClipOval(
+                            child: Container(
+                                height: kToolbarHeight,
+                                width: kToolbarHeight,
+                                color: Color.fromARGB(127, 255, 255, 255),
+                                child: IconButton(
+                                    color: Colors.black,
+                                    onPressed: () {
+                                        Navigator.pop(context);
+                                    },
+                                    icon: Icon(
+                                        Icons.more_vert,
+                                    ),
+                                ),
+                            ),
+                        ),
                     ],
-                    leading: IconButton(
-                        color: Colors.black,
-                        onPressed: () {
-                            Navigator.pop(context);
-                        },
-                        icon: Icon(
-                            Icons.arrow_back,
+                    leading: ClipOval(
+                        child: Container(
+                            height: kToolbarHeight,
+                            width: kToolbarHeight,
+                            color: Color.fromARGB(127, 255, 255, 255),
+                            child: IconButton(
+                                color: Colors.black,
+                                onPressed: () {
+                                    Navigator.pop(context);
+                                },
+                                icon: Icon(
+                                    Icons.arrow_back,
+                                ),
+                            ),
                         ),
                     ),
                     automaticallyImplyLeading: leading,
