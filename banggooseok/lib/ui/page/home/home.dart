@@ -1,10 +1,10 @@
 import 'package:banggooseok/arch/observable.dart';
+import 'package:banggooseok/tool/tool.dart';
 import 'package:banggooseok/ui/page/home/provider.dart';
 import 'package:banggooseok/repository/banggooseok/model.dart';
 import 'package:banggooseok/ui/page/detail/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
     @override
@@ -63,12 +63,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
             appBar: _appbarWidget(),
             body: _bodyWidget(),
         );
-    }
-
-    final oCcy = new NumberFormat("#,###", "ko_KR");
-    String calcStringToWon(String priceString) {
-        if (priceString == "집주인과 합의") return priceString;
-        return "${oCcy.format(int.parse(priceString))}원";
     }
 
     Widget _appbarWidget() {
@@ -148,7 +142,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
                                                     height: 5,
                                                 ),
                                                 Text(
-                                                    calcStringToWon(roomList.rooms[index].fee.toString()),
+                                                    Tool.calcStringToWon(roomList.rooms[index].fee),
                                                     style: TextStyle(fontWeight: FontWeight.w500),
                                                 ),
                                                 Expanded(
