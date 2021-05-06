@@ -20,7 +20,7 @@ class _BasePageState extends State<BasePage> {
     BaseProvider provider = BaseProvider();
 
     int _currentPageIndex, _port, _state;
-    String _token, _alias, _presExId;
+    String _token, _alias, _presExId, _error;
 
     @override
     void initState() {
@@ -90,7 +90,13 @@ class _BasePageState extends State<BasePage> {
 
         provider.getRecordsResponse.addObserver(Observer((RecordsResponse value) {
             if (value.results != null && value.results.length > 0) {
-                provider.requestVerifierVerified(_presExId);
+                try {
+                    provider.requestVerifierVerified(_presExId);
+                } catch(e) {
+                    setState(() {
+                        _error = e.toString();
+                    });
+                }
             } else {
                 Navigator.pop(context);
             }
@@ -117,13 +123,13 @@ class _BasePageState extends State<BasePage> {
                     children: [
                         _state == 2 
                         ? Text(
-                            "자격 증명 발급 중",
+                            _error == null ? "자격 증명 발급 중" : _error,
                             style: TextStyle(
                                 fontSize: 24,
                             ),
                         ) 
                         : Text(
-                            "자격 증명 확인 중",
+                            _error == null ? "자격 증명 확인 중" : _error,
                             style: TextStyle(
                                 fontSize: 24,
                             ),

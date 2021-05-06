@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:banggooseok/arch/observable.dart';
 import 'package:banggooseok/repository/aries/model.dart';
 import 'package:banggooseok/repository/aries/repository.dart';
@@ -50,8 +52,20 @@ class BaseProvider {
     }
 
     void requestVerifierVerified(String presExId) {
-        _banggooseokRepository.verifierVerified(presExId: presExId).then((value) {
-            _verifiedResponse.setData(value);
+        _requestVerifierVerifiedRec(presExId, 3);
+    }
+
+    void _requestVerifierVerifiedRec(String presExId, int retrieve) async {
+        Future.delayed(const Duration(seconds: 3)).then((_) {
+            _banggooseokRepository.verifierVerified(presExId: presExId).then((value) {
+                _verifiedResponse.setData(value);
+            }).onError((error, stackTrace) {
+                if (retrieve > 0) {
+                    _requestVerifierVerifiedRec(presExId, --retrieve);
+                } else {
+                    throw Exception("서버에서 요청이 처리되지않았습니다.");
+                }
+            });
         });
     }
 
