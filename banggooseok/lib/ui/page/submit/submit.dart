@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 
 class SubmitPage extends StatefulWidget {
 
-    String presExId;
+    final String presExId;
 
     SubmitPage(this.presExId);
 
@@ -24,8 +24,6 @@ class _SubmitPageState extends State<SubmitPage> {
     final GlobalKey<FormState> _roomFormKey = GlobalKey<FormState>();
 
     final _typeList = ["월세", "전세", "년세"];
-
-    String _token;
 
     ImagePicker imagePicker = ImagePicker();
     SubmitProvider provider = SubmitProvider();
@@ -49,12 +47,6 @@ class _SubmitPageState extends State<SubmitPage> {
     }
 
     void _initObservers() {
-        provider.getToken.addObserver(Observer((String value) {
-            setState(() {
-                _token = value;
-            });
-        }));
-
         provider.getUserId.addObserver(Observer((int value) {
             setState(() {
                 room.userId = value;

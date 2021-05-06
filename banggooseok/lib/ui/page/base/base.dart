@@ -50,9 +50,11 @@ class _BasePageState extends State<BasePage> {
             _token = value;
 
             if (_alias == null || _port == null) {
-                print("Request credential from issuer");
+                print("Aries: Request agent info from issuer");
                 provider.requestIssuerAgent(_token);
             } else {
+                print("Aries: Agent Info is valid");
+                print("Aries: Request requesting issue from Verifier");
                 provider.requestVerifierKnock(_alias);
                 setState(() {
                     _state = 1;
@@ -63,20 +65,31 @@ class _BasePageState extends State<BasePage> {
         provider.getAgentResponse.addObserver(Observer((AgentResponse value) {
             _port = value.port;
             _alias = value.alias;
+            print("Aries: Request invitation from issuer");
             provider.requestIssuerInv(_token, _alias);
         }));
         
         provider.getInvReponse.addObserver(Observer((String value) {
+            print("Aries: Request receive invitation from agent");
             provider.requestHolderReceiveInv(_port, _alias, value);
         }));
 
         provider.getInvRecResponse.addObserver(Observer((String value) {
-            provider.requestIssuerCred(_token, _alias);
+            print("Aries: Request credential from issuer");
+            try {
+                provider.requestIssuerCred(_token, _alias);
+            } catch (e) {
+                print("Aries: Failed to request credential from issuer");
+                setState(() {
+                    _error = e.toString();
+                });
+            }
         }));
 
         provider.getCredResponse.addObserver(Observer((V20Response value) {
             _prefs.setString("alias", _alias);
             _prefs.setInt("port", _port);
+            print("Aries: Request requesting issue from Verifier");
             provider.requestVerifierKnock(_alias);
             setState(() {
                 _state = 1;
@@ -85,25 +98,25 @@ class _BasePageState extends State<BasePage> {
 
         provider.getKnockResponse.addObserver(Observer((V20Response value) {
             _presExId = value.presExId;
+            print("Aries: Request presentation records from Holder");
             provider.requestHolderRecords(_port, value.threadId);
         }));
 
         provider.getRecordsResponse.addObserver(Observer((RecordsResponse value) {
-            if (value.results != null && value.results.length > 0) {
-                try {
-                    provider.requestVerifierVerified(_presExId);
-                } catch(e) {
-                    setState(() {
-                        _error = e.toString();
-                    });
-                }
-            } else {
-                Navigator.pop(context);
+            try {
+                print("Aries: Request verifying proof from Verifier");
+                provider.requestVerifierVerified(_presExId);
+            } catch(e) {
+                print("Aries: Failed to request verifying proof from Verifier");
+                setState(() {
+                    _error = e.toString();
+                });
             }
         }));
 
         provider.getVerifiedResponse.addObserver(Observer((VerifiedResponse value) {
             if (value.verified) {
+                print("Aries: Proof is verified");
                 setState(() {
                     _state = 0;
                 });

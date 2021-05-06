@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:banggooseok/arch/observable.dart';
 import 'package:banggooseok/repository/aries/model.dart';
 import 'package:banggooseok/repository/aries/repository.dart';
@@ -40,25 +38,43 @@ class BaseProvider {
     }
 
     void requestIssuerCred(String token, String alias) {
-        _banggooseokRepository.issuerCredential(token: token, alias: alias).then((value) {
-            _credResponse.setData(value);
+        _requestIssuerCredRec(token, alias, 3);
+    }
+
+    void _requestIssuerCredRec(String token, String alias, int retrieve) {
+        Future.delayed(const Duration(seconds: 3)).then((_) {
+            _banggooseokRepository.issuerCredential(token: token, alias: alias).then((value) {
+                _credResponse.setData(value);
+            }).onError((error, stackTrace) {
+                if (retrieve > 0) {
+                    _requestIssuerCredRec(token, alias, --retrieve);
+                } else {
+                    throw Exception("서버에서 요청이 처리되지않았습니다.");
+                }
+            });
         });
     }
 
     void requestVerifierKnock(String alias) {
-        _banggooseokRepository.verifierKnock(alias: alias).then((value) {
-            _knockResponse.setData(value);
+        Future.delayed(const Duration(seconds: 5)).then((_) {
+            _banggooseokRepository.verifierKnock(alias: alias).then((value) {
+                _knockResponse.setData(value);
+            });
         });
     }
 
     void requestVerifierVerified(String presExId) {
-        _requestVerifierVerifiedRec(presExId, 3);
+        _requestVerifierVerifiedRec(presExId, 5);
     }
 
     void _requestVerifierVerifiedRec(String presExId, int retrieve) async {
-        Future.delayed(const Duration(seconds: 3)).then((_) {
+        Future.delayed(const Duration(seconds: 5)).then((_) {
             _banggooseokRepository.verifierVerified(presExId: presExId).then((value) {
-                _verifiedResponse.setData(value);
+                if (!value.verified && retrieve > 0) {
+                    _requestVerifierVerifiedRec(presExId, --retrieve);
+                } else {
+                    _verifiedResponse.setData(value);
+                }
             }).onError((error, stackTrace) {
                 if (retrieve > 0) {
                     _requestVerifierVerifiedRec(presExId, --retrieve);
@@ -76,8 +92,18 @@ class BaseProvider {
     }
 
     void requestHolderRecords(int port, String threadId) {
-        _ariesRepository.holderRecords(port: port, threadId: threadId).then((value) {
-            _recordsResponse.setData(value);
+        _requestHolderRecordsRec(port, threadId, 3);
+    }
+
+    void _requestHolderRecordsRec(int port, String threadId, int retrieve) {
+        Future.delayed(const Duration(seconds: 3)).then((_) {
+            _ariesRepository.holderRecords(port: port, threadId: threadId).then((value) {
+                if (value.results != null && value.results.length > 0) {
+                    _recordsResponse.setData(value);
+                } else {
+                    _requestHolderRecordsRec(port, threadId, --retrieve);
+                }
+            });
         });
     }
 
