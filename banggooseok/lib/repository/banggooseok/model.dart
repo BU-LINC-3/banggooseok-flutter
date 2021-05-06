@@ -155,3 +155,50 @@ class SubmitResponse {
     Map<String, dynamic> toJson() => _$SubmitResponseToJson(this);
 
 }
+
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+class AgentResponse {
+
+    int port;
+
+    String alias;
+
+    AgentResponse({this.port, this.alias});
+
+    factory AgentResponse.fromJson(Map<String, dynamic> json) => _$AgentResponseFromJson(json);
+
+    Map<String, dynamic> toJson() => _$AgentResponseToJson(this);
+
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+class V20Response {
+
+    String state;
+
+    String presExId;
+
+    String threadId;
+
+    String updatedAt;
+
+    V20Response({this.state, this.presExId, this.threadId, this.updatedAt});
+
+    factory V20Response.fromJson(Map<String, dynamic> json) => _$V20ResponseFromJson(json);
+
+    Map<String, dynamic> toJson() => _$V20ResponseToJson(this);
+
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake, includeIfNull: false)
+class VerifiedResponse {
+
+    bool verified;
+
+    VerifiedResponse({this.verified});
+
+    factory VerifiedResponse.fromJson(Map<String, dynamic> json) => _$VerifiedResponseFromJson(json);
+
+    Map<String, dynamic> toJson() => _$VerifiedResponseToJson(this);
+
+}

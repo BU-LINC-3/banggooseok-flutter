@@ -1,8 +1,13 @@
+import 'package:banggooseok/arch/observable.dart';
+import 'package:banggooseok/repository/aries/model.dart';
+import 'package:banggooseok/repository/banggooseok/model.dart';
+import 'package:banggooseok/ui/page/base/provider.dart';
 import 'package:banggooseok/ui/page/home/home.dart';
 import 'package:banggooseok/ui/page/submit/submit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BasePage extends StatefulWidget {
     @override
@@ -10,18 +15,127 @@ class BasePage extends StatefulWidget {
 }
 
 class _BasePageState extends State<BasePage> {
-    int _currentPageIndex;
+    
+    SharedPreferences _prefs;
+    BaseProvider provider = BaseProvider();
+
+    int _currentPageIndex, _port, _state;
+    String _token, _alias, _presExId;
 
     @override
     void initState() {
         super.initState();
+        _init();
+        _initObservers();
+    }
+
+    void _init() {
         _currentPageIndex = 0;
+        _state = 2;
+
+        SharedPreferences.getInstance().then((value) {
+            _prefs = value;
+
+            try {
+                _alias = _prefs.getString("alias");
+                _port = _prefs.getInt("port");
+            } catch (e) { }
+
+            provider.requestToken();
+        });
+    }
+
+    void _initObservers() {
+        provider.getToken.addObserver(Observer((String value) {
+            _token = value;
+
+            if (_alias == null || _port == null) {
+                print("Request credential from issuer");
+                provider.requestIssuerAgent(_token);
+            } else {
+                provider.requestVerifierKnock(_alias);
+                setState(() {
+                    _state = 1;
+                });
+            }
+        }));
+
+        provider.getAgentResponse.addObserver(Observer((AgentResponse value) {
+            _port = value.port;
+            _alias = value.alias;
+            provider.requestIssuerInv(_token, _alias);
+        }));
+        
+        provider.getInvReponse.addObserver(Observer((String value) {
+            provider.requestHolderReceiveInv(_port, _alias, value);
+        }));
+
+        provider.getInvRecResponse.addObserver(Observer((String value) {
+            provider.requestIssuerCred(_token, _alias);
+        }));
+
+        provider.getCredResponse.addObserver(Observer((V20Response value) {
+            _prefs.setString("alias", _alias);
+            _prefs.setInt("port", _port);
+            provider.requestVerifierKnock(_alias);
+            setState(() {
+                _state = 1;
+            });
+        }));
+
+        provider.getKnockResponse.addObserver(Observer((V20Response value) {
+            _presExId = value.presExId;
+            provider.requestHolderRecords(_port, value.threadId);
+        }));
+
+        provider.getRecordsResponse.addObserver(Observer((RecordsResponse value) {
+            if (value.results != null && value.results.length > 0) {
+                provider.requestVerifierVerified(_presExId);
+            } else {
+                Navigator.pop(context);
+            }
+        }));
+
+        provider.getVerifiedResponse.addObserver(Observer((VerifiedResponse value) {
+            if (value.verified) {
+                setState(() {
+                    _state = 0;
+                });
+            } else {
+                Navigator.pop(context);
+            }
+        }));
     }
 
     @override
     Widget build(BuildContext context) {
         _getUser();
-        return Scaffold(
+        return _state > 0 ? Scaffold(
+            body: Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                        _state == 2 
+                        ? Text(
+                            "자격 증명 발급 중",
+                            style: TextStyle(
+                                fontSize: 24,
+                            ),
+                        ) 
+                        : Text(
+                            "자격 증명 확인 중",
+                            style: TextStyle(
+                                fontSize: 24,
+                            ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(top: 18),
+                            child: CircularProgressIndicator(),
+                        ),
+                    ],
+                ),
+            ),
+        ) : Scaffold(
             body: _bodyWidget(),
             bottomNavigationBar: _botomNavigationBarwidget(),
         );
@@ -42,7 +156,7 @@ class _BasePageState extends State<BasePage> {
                 return HomePage();
                 break;
             case 1:
-                return SubmitPage();
+                return SubmitPage(_presExId);
                 break;
             case 2:
                 return Container();

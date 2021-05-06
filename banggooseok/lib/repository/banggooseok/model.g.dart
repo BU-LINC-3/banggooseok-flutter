@@ -190,3 +190,68 @@ Map<String, dynamic> _$SubmitResponseToJson(SubmitResponse instance) {
   writeNotNull('room_id', instance.roomId);
   return val;
 }
+
+AgentResponse _$AgentResponseFromJson(Map<String, dynamic> json) {
+  return AgentResponse(
+    port: json['port'] as int,
+    alias: json['alias'] as String,
+  );
+}
+
+Map<String, dynamic> _$AgentResponseToJson(AgentResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('port', instance.port);
+  writeNotNull('alias', instance.alias);
+  return val;
+}
+
+V20Response _$V20ResponseFromJson(Map<String, dynamic> json) {
+  return V20Response(
+    state: json['state'] as String,
+    presExId: json['pres_ex_id'] as String,
+    threadId: json['thread_id'] as String,
+    updatedAt: json['updated_at'] as String,
+  );
+}
+
+Map<String, dynamic> _$V20ResponseToJson(V20Response instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('state', instance.state);
+  writeNotNull('pres_ex_id', instance.presExId);
+  writeNotNull('thread_id', instance.threadId);
+  writeNotNull('updated_at', instance.updatedAt);
+  return val;
+}
+
+VerifiedResponse _$VerifiedResponseFromJson(Map<String, dynamic> json) {
+  return VerifiedResponse(
+    verified: json['verified'] as bool,
+  );
+}
+
+Map<String, dynamic> _$VerifiedResponseToJson(VerifiedResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('verified', instance.verified);
+  return val;
+}

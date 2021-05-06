@@ -10,6 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SubmitPage extends StatefulWidget {
+
+    String presExId;
+
+    SubmitPage(this.presExId);
+
     @override
     _SubmitPageState createState() => _SubmitPageState();
 }
@@ -221,7 +226,7 @@ class _SubmitPageState extends State<SubmitPage> {
                 child: ElevatedButton(
                     onPressed: () {
                         if (_roomFormKey.currentState.validate()) {
-                            provider.postRoom(_token, room.userId, room);
+                            provider.postRoom(widget.presExId, room.userId, room);
                         }
                     },
                     style: ButtonStyle(
@@ -258,7 +263,7 @@ class _SubmitPageState extends State<SubmitPage> {
                                 child: ElevatedButton(
                                     onPressed: () {
                                         _getImageFromDevice((value) {
-                                            provider.postImage(room.id, _token, room.userId, value);
+                                            provider.postImage(room.id, widget.presExId, room.userId, value);
                                         });
                                     },
                                     style: ButtonStyle(

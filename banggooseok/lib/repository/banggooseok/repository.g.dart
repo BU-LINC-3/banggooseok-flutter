@@ -55,10 +55,10 @@ class _BanggooseokRepository implements BanggooseokRepository {
   }
 
   @override
-  Future<SubmitResponse> postRoom({token, userId, room}) async {
+  Future<SubmitResponse> postRoom({presExId, userId, room}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'token': token,
+      r'pres_ex_id': presExId,
       r'user_id': userId
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -77,10 +77,10 @@ class _BanggooseokRepository implements BanggooseokRepository {
   }
 
   @override
-  Future<RoomImage> postImage({roomId, token, userId, image}) async {
+  Future<RoomImage> postImage({roomId, presExId, userId, image}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'token': token,
+      r'pres_ex_id': presExId,
       r'user_id': userId
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -101,6 +101,100 @@ class _BanggooseokRepository implements BanggooseokRepository {
             baseUrl: baseUrl),
         data: _data);
     final value = RoomImage.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AgentResponse> issuerAgent({token}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'token': token};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/api/did/issuer/agent',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AgentResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<String> issuerInvitation({token, alias}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'token': token, r'alias': alias};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<String>('/api/did/issuer/invitation',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<V20Response> issuerCredential({token, alias}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'token': token, r'alias': alias};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/api/did/issuer/credential',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = V20Response.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<V20Response> verifierKnock({alias}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'alias': alias};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/api/did/verifier/knock',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = V20Response.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<VerifiedResponse> verifierVerified({presExId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'pres_ex_id': presExId};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/api/did/verifier/verified',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = VerifiedResponse.fromJson(_result.data);
     return value;
   }
 }

@@ -26,14 +26,14 @@ class SubmitProvider {
         });
     }
 
-    void postRoom(String token, int userId, Room room) {
-        _banggooseokRepository.postRoom(token: token, userId: userId, room: room).then((value) {
+    void postRoom(String presExId, int userId, Room room) {
+        _banggooseokRepository.postRoom(presExId: presExId, userId: userId, room: room).then((value) {
             _roomId.setData(value.roomId);
         });
     }
 
-    void postImage(int roomId, String token, int userId, File image) {
-        _banggooseokRepository.postImage(roomId: roomId, token: token, userId: userId, image: image).then((value) {
+    void postImage(int roomId, String presExId, int userId, File image) {
+        _banggooseokRepository.postImage(roomId: roomId, presExId: presExId, userId: userId, image: image).then((value) {
             _roomImage.setData(value);
         });
     }

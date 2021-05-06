@@ -13,6 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
     bool _isKakaoTalkInstalled = false;
 
     @override
@@ -39,7 +40,8 @@ class _LoginPageState extends State<LoginPage> {
         try {
             var token = await AuthApi.instance.issueAccessToken(authCode);
             AccessTokenStore.instance.toStore(token);
-            print(token);
+            print(token.accessToken);
+
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => BasePage()),
